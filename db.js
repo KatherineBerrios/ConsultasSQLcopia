@@ -3,10 +3,10 @@ const { Pool } = require('pg');
 
 // Configuramos el pool de conexión
 const pool = new Pool({
-  user: 'brayandiazc',
+  user: 'usuario',
   host: 'localhost',
   database: 'musica',
-  password: '1010051341Bd',
+  password: 'contraseña',
   port: 5432,
 });
 
@@ -60,3 +60,30 @@ const obtenerAlbumesComoArreglo = async () => {
 
 // Ejecutamos la función
 obtenerAlbumesComoArreglo();
+
+
+// Función asíncrona para ejecutar la consulta SQL
+const obtenerArtistasYAlbumes = async () => {
+  try {
+    const consultaSQL = `
+      SELECT artistas.nombre, albumes.titulo, albumes.fecha_lanzamiento
+      FROM artistas
+      JOIN albumes ON artistas.artista_id = albumes.artista_id;
+    `;
+
+    // Ejecutar la consulta
+    const resultado = await pool.query(consultaSQL);
+
+    // Imprimir los resultados
+    console.log("Resultados de la consulta:");
+    resultado.rows.forEach(row => {
+      console.log(`${row.nombre} - ${row.titulo} - ${row.fecha_lanzamiento}`);
+    });
+  } catch (err) {
+    // Manejar errores
+    console.error('Error al ejecutar la consulta:', err);
+  }
+};
+
+// Llamar a la función
+obtenerArtistasYAlbumes();
